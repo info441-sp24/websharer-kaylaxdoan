@@ -6,6 +6,15 @@ function init(){
     loadPosts();
 }
 
+const escapeHTML = str => str.replace(/[&<>'"]/g, 
+  tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag]));
+
 async function loadPosts(){
     document.getElementById("posts_box").innerText = "Loading...";
     let postsJson = await fetchJSON(`api/${apiVersion}/posts`)
@@ -19,8 +28,11 @@ async function loadPosts(){
 async function postUrl(){
     document.getElementById("postStatus").innerHTML = "sending data..."
     let url = document.getElementById("urlInput").value;
+    url = escapeHTML(url)
     let description = document.getElementById("descriptionInput").value;
+    description = escapeHTML(description)
     let username = document.getElementById("usernameInput").value;
+    username = escapeHTML(username)
 
     try{
         await fetchJSON(`api/${apiVersion}/posts`, {
