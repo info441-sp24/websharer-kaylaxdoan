@@ -27,12 +27,9 @@ async function loadPosts(){
 
 async function postUrl(){
     document.getElementById("postStatus").innerHTML = "sending data..."
-    let url = document.getElementById("urlInput").value;
-    url = escapeHTML(url)
-    let description = document.getElementById("descriptionInput").value;
-    description = escapeHTML(description)
-    let username = document.getElementById("usernameInput").value;
-    username = escapeHTML(username)
+    let url = escapeHTML(document.getElementById("urlInput").value);
+    let description = escapeHTML(document.getElementById("descriptionInput").value);
+    let username = escapeHTML(document.getElementById("usernameInput").value);
 
     try{
         await fetchJSON(`api/${apiVersion}/posts`, {
@@ -84,7 +81,7 @@ async function previewUrl(){
                 let response = await fetch(`api/${apiVersion}/urls/preview?url=` + url)
                 let previewHtml = await response.text()
                 if(url == lastURLPreviewed){
-                    document.getElementById("url_previews").innerHTML = previewHtml;
+                    document.getElementById("url_previews").innerHTML = escapeHTML(previewHtml);
                 }
             }catch(error){
                 document.getElementById("url_previews").innerHTML = "There was an error: " + error;
