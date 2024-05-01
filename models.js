@@ -15,6 +15,7 @@ const postSchema = new mongoose.Schema({
     created_date: Date
 })
 
+
 models.Post = mongoose.model('Post', postSchema)
 
 console.log("mongoose models created")

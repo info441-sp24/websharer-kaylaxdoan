@@ -1,40 +1,29 @@
-function init(){
+async function init(){
     let urlInput = document.getElementById("urlInput");
     urlInput.onkeyup = previewUrl;
     urlInput.onchange = previewUrl;
     urlInput.onclick = previewUrl;
+
+    await loadIdentity();
     loadPosts();
 }
-
-const escapeHTML = str => str.replace(/[&<>'"]/g, 
-  tag => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      "'": '&#39;',
-      '"': '&quot;'
-    }[tag]));
 
 async function loadPosts(){
     document.getElementById("posts_box").innerText = "Loading...";
     let postsJson = await fetchJSON(`api/${apiVersion}/posts`)
-    
-    let postsHtml = postsJson.map(postInfo => {
-        return `<div class="post">${postInfo.username}: ${postInfo.description}${postInfo.htmlPreview}</div>`
-    }).join("\n");
+    let postsHtml = createPostsHtml(postsJson)
     document.getElementById("posts_box").innerHTML = postsHtml;
 }
 
 async function postUrl(){
     document.getElementById("postStatus").innerHTML = "sending data..."
-    let url = escapeHTML(document.getElementById("urlInput").value);
-    let description = escapeHTML(document.getElementById("descriptionInput").value);
-    let username = escapeHTML(document.getElementById("usernameInput").value);
+    let url = document.getElementById("urlInput").value;
+    let description = document.getElementById("descriptionInput").value;
 
     try{
         await fetchJSON(`api/${apiVersion}/posts`, {
             method: "POST",
-            body: {url: url, description: description, username: username}
+            body: {url: url, description: description}
         })
     }catch(error){
         document.getElementById("postStatus").innerText = "Error"
@@ -42,11 +31,12 @@ async function postUrl(){
     }
     document.getElementById("urlInput").value = "";
     document.getElementById("descriptionInput").value = "";
-    document.getElementById("usernameInput").value = "";
     document.getElementById("url_previews").innerHTML = "";
-    document.getElementById("postStatus").innerHTML = "successfully uploaded"
+    document.getElementById("postStatus").innerText = "successfully uploaded"
     loadPosts();
+    
 }
+
 
 
 let lastTypedUrl = ""
@@ -78,10 +68,10 @@ async function previewUrl(){
             lastURLPreviewed = url; // mark this url as one we are previewing
             document.getElementById("url_previews").innerHTML = "Loading preview..."
             try{
-                let response = await fetch(`api/${apiVersion}/urls/preview?url=` + url)
+                let response = await fetch(`api/${apiVersion}/urls/preview?url=` + encodeURIComponent(url))
                 let previewHtml = await response.text()
                 if(url == lastURLPreviewed){
-                    document.getElementById("url_previews").innerHTML = escapeHTML(previewHtml);
+                    document.getElementById("url_previews").innerHTML = previewHtml;
                 }
             }catch(error){
                 document.getElementById("url_previews").innerHTML = "There was an error: " + error;
@@ -89,4 +79,3 @@ async function previewUrl(){
         }
     }
 }
-
