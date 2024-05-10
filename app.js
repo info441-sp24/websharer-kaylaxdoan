@@ -11,7 +11,7 @@ const authConfig = {
    	clientId: "18d3292a-6aff-4178-8f83-43ab44b81071",
     	authority: "https://login.microsoftonline.com/f6b6dd5b-f02f-441a-99a0-162ac5060bd2",
     	clientSecret: "3JS8Q~BuW6zPa5hHPnWs7i1C-5IEoa3bAyzY8bJt",
-    	redirectUri: "https://a5-websharer.kayladoan.me/redirect"
+    	redirectUri: "https://a6-websharer.kayladoan.me/redirect"
     },
 	system: {
     	loggerOptions: {
