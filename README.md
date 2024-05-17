@@ -22,3 +22,6 @@ https://a5-websharer.kayladoan.me
 
 A6:
 https://a6-websharer.kayladoan.me 
+
+A7:
+https://a7-websharer.kayladoan.me 

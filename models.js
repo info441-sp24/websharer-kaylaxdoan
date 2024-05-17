@@ -23,8 +23,15 @@ const commentSchema = new mongoose.Schema({
     created_date: Date
 })
 
+const userInfoSchema = new mongoose.Schema({
+    username: String,
+    pronouns: String,
+    bio: { type: String, default: ''},
+})
+
 models.Post = mongoose.model('Post', postSchema)
 models.Comment = mongoose.model('Comment', commentSchema)
+models.UserInfo = mongoose.model('UserInfo', userInfoSchema)
 
 console.log("mongoose models created")
 
